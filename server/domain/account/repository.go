@@ -28,7 +28,6 @@ func (r *repository) ConvertForRepo(model Account) (account.Account, error) {
 		Email:       model.Email,
 		Password:    model.Password,
 		CreatedAt:   model.CreatedAt,
-		UpdatedAt:   *model.UpdatedAt,
 	}, nil
 }
 

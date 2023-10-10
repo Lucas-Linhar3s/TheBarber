@@ -6,6 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreatedAccount godoc
+// @Summary Create a new account
+// @Description Create a new account
+// @Tags /account/create
+// @Accept json
+// @Produce json
+// @Param account body account.Req true "Body of account"
+// @Success 201 "Created"
+// @Router  /account/create [post]
 func CreatedAccount(ctx *gin.Context) {
 	var req *account.Req
 
