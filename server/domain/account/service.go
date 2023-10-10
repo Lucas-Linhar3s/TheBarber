@@ -1,6 +1,8 @@
 package account
 
-import "github.com/Lucas-Linhar3s/TheBarber/database"
+import (
+	"github.com/Lucas-Linhar3s/TheBarber/database"
+)
 
 type Service struct {
 	pg IAccount
@@ -20,7 +22,7 @@ func GetRepository(client *database.Client) IAccount {
 
 // CreateAccount creates a new account
 func (s *Service) CreateAccount(model *Account) (createdId string, err error) {
-	dados, err := s.pg.ConverteForRepo(*model)
+	dados, err := s.pg.ConvertForRepo(*model)
 	if err != nil {
 		return "", err
 	}
@@ -29,7 +31,7 @@ func (s *Service) CreateAccount(model *Account) (createdId string, err error) {
 
 // Login logs in an account
 func (s *Service) Login(model Account) (token string, err error) {
-	dados, err := s.pg.ConverteForRepo(model)
+	dados, err := s.pg.ConvertForRepo(model)
 	if err != nil {
 		return "", err
 	}

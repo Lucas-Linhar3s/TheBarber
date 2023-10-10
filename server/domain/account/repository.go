@@ -16,10 +16,19 @@ func newRepository(client *database.Client) *repository {
 	}
 }
 
-func (r *repository) ConverteForRepo(model Account) (account.Account, error) {
+func (r *repository) ConvertForRepo(model Account) (account.Account, error) {
 	return account.Account{
-		Email:    model.Email,
-		Password: model.Password,
+		ID:          model.ID,
+		Name:        model.Name,
+		LastName:    model.LastName,
+		Phone:       model.Phone,
+		DateOfBirth: model.DateOfBirth,
+		Photo:       model.Photo,
+		IsBarber:    model.IsBarber,
+		Email:       model.Email,
+		Password:    model.Password,
+		CreatedAt:   model.CreatedAt,
+		UpdatedAt:   *model.UpdatedAt,
 	}, nil
 }
 
