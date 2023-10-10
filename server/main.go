@@ -15,8 +15,10 @@ func main() {
 		log.Fatal("Erro ao carregar o arquivo .env")
 	}
 
-	r := gin.Default()
+	r := gin.New()
 	interfaces.Router(r.Group("/v1"))
-	r.Run() // listen and serve on 0.0.0.0:8080
 
+	if err := r.Run(":8888"); err != nil {
+		log.Fatal("Erro ao iniciar o servidor")
+	}
 }

@@ -2,38 +2,51 @@ package account
 
 import (
 	"os"
+	"time"
 
 	"github.com/Lucas-Linhar3s/TheBarber/config"
 	"github.com/Lucas-Linhar3s/TheBarber/database"
 	"github.com/Lucas-Linhar3s/TheBarber/domain/account"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
-func CreatedAccount(ctx *gin.Context) (result interface{}, err error) {
+// CreatedAccount is a function that creates an account
+func CreatedAccount(ctx *gin.Context, req *Req) (createdId string, err error) {
 	API_URL := os.Getenv("API_URL")
 	API_KEY := os.Getenv("API_KEY")
 
 	client, err := database.NewClient(API_URL, API_KEY, nil)
 	if err != nil {
-		config.ResponseWithError(ctx, 500, err)
-		return
+		return "", err
 	}
 
 	var (
 		repo = account.GetService(account.GetRepository(client))
-		req  Req
 	)
 
-	data := account.Account{
-		Email:    "account",
-		Password: req.Password,
-	}
-
-	result, err = repo.Login(data)
+	hash, err := config.GenerateHash(req.Password)
 	if err != nil {
-		config.ResponseWithError(ctx, 500, err)
-		return
+		return "", err
 	}
-	return
 
+	data := account.Account{
+		ID:          uuid.New(),
+		Name:        req.Name,
+		LastName:    req.LastName,
+		Phone:       req.Phone,
+		DateOfBirth: req.DateOfBirth,
+		Photo:       req.Photo,
+		IsBarber:    req.IsBarber,
+		Email:       req.Email,
+		Password:    hash,
+		CreatedAt:   time.Now().Local(),
+	}
+
+	createdId, err = repo.CreateAccount(&data)
+	if err != nil {
+		return "", err
+	}
+
+	return
 }

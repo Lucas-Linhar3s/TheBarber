@@ -7,16 +7,22 @@ import (
 )
 
 func CreatedAccount(ctx *gin.Context) {
-	config.ResponseWithMessage(ctx, 201, "CreatedAccount")
-}
+	var req *account.Req
 
-func Login(ctx *gin.Context) {
-	data, err := account.CreatedAccount(ctx)
-	if err != nil {
-		config.ResponseWithError(ctx, 500, err)
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		config.ResponseWithError(ctx, 400, err)
 		return
 	}
 
-	config.ResponseWithMessageAndData(ctx, 200, "Login", data)
+	createdId, err := account.CreatedAccount(ctx, req)
+	if err != nil {
+		config.ResponseWithError(ctx, 400, err)
+		return
+	}
 
+	config.ResponseWithMessageAndData(ctx, 201, "Success", createdId)
+}
+
+func Login(ctx *gin.Context) {
+	config.ResponseWithMessage(ctx, 200, "Login")
 }
