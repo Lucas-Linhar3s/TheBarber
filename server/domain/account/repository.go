@@ -17,7 +17,6 @@ func newRepository(client *database.Client) *repository {
 }
 
 func (r *repository) ConvertForRepo(model Account) (account.Account, error) {
-func (r *repository) ConvertForRepo(model Account) (account.Account, error) {
 	return account.Account{
 		ID:          model.ID,
 		Name:        model.Name,
