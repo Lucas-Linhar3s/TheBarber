@@ -16,7 +16,7 @@ func CreatedAccount(ctx *gin.Context, req *Req) (createdId string, err error) {
 	API_URL := os.Getenv("API_URL")
 	API_KEY := os.Getenv("API_KEY")
 
-	client, err := database.NewClient(API_URL, API_KEY, nil)
+	client, err := database.NewClient(API_URL, API_KEY, nil, "public")
 	if err != nil {
 		return "", err
 	}

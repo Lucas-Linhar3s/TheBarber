@@ -21,7 +21,7 @@ type ClientOptions struct {
 	Db      *RestOptions
 }
 
-func NewClient(url, key string, options *ClientOptions) (*Client, error) {
+func NewClient(url, key string, options *ClientOptions, schema string) (*Client, error) {
 	if url == "" || key == "" {
 		return nil, errors.New("url and key are required")
 	}
@@ -32,7 +32,7 @@ func NewClient(url, key string, options *ClientOptions) (*Client, error) {
 	}
 
 	client := &Client{}
-	schema := "public"
+
 	if options != nil && options.Db != nil {
 		if len(options.Headers) > 0 {
 			for k, v := range options.Headers {
