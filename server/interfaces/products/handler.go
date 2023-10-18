@@ -31,3 +31,21 @@ func CreateProduct(ctx *gin.Context) {
 
 	config.ResponseWithMessageAndData(ctx, 201, "Success on created product", createdId)
 }
+
+// GetAllProducts godoc
+// @Summary Get all products
+// @Description Get all products
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Success 200 {object} products.ProductResPag "ListAllProducts"
+// @Router /product/list/all [get]
+func GetAllProducts(ctx *gin.Context) {
+	products, err := products.GetAllProducts(ctx)
+	if err != nil {
+		config.ResponseWithError(ctx, 400, err)
+		return
+	}
+
+	config.Response(ctx, 200, products)
+}

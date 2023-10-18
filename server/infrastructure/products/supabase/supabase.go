@@ -1,6 +1,8 @@
 package supabase
 
 import (
+	"encoding/json"
+
 	"github.com/Lucas-Linhar3s/TheBarber/database"
 	"github.com/Lucas-Linhar3s/TheBarber/infrastructure/products"
 	"github.com/google/uuid"
@@ -13,7 +15,22 @@ type PGRepository struct {
 
 // GetAllProducts returns all products from the PGRepository.
 func (r *PGRepository) GetAllProducts() (products []products.Product, err error) {
-	return products, nil
+
+	query, count, err := r.DB.From("product").Select("*", "exact", false).Execute()
+	if err != nil {
+		return products, err
+	}
+
+	if count == 0 {
+		return products, err
+	}
+
+	if err = json.Unmarshal(query, &products); err != nil {
+		return products, err
+	}
+
+	return
+
 }
 
 // GetProductByID retrieves a product from the PGRepository based on its ID.
