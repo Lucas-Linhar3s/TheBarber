@@ -2,6 +2,7 @@ package products
 
 import (
 	"os"
+	"time"
 
 	"github.com/Lucas-Linhar3s/TheBarber/database"
 	"github.com/Lucas-Linhar3s/TheBarber/domain/products"
@@ -28,6 +29,7 @@ func CreateProduct(ctx *gin.Context, req ProductReq) (createdID *uuid.UUID, err 
 		AccountID: req.AccountID,
 		Name:      req.Name,
 		Price:     req.Price,
+		CreatedAt: time.Now().Local(),
 	}
 
 	createdID, err = repo.CreateProduct(data)
@@ -36,4 +38,43 @@ func CreateProduct(ctx *gin.Context, req ProductReq) (createdID *uuid.UUID, err 
 	}
 
 	return
+}
+
+func GetAllProducts(ctx *gin.Context) (product *ProductResPag, err error) {
+	API_URL := os.Getenv("API_URL")
+	API_KEY := os.Getenv("API_KEY")
+
+	client, err := database.NewClient(API_URL, API_KEY, nil, "public")
+	if err != nil {
+		return nil, err
+	}
+
+	var (
+		repo = products.GetService(products.GetRepository(client))
+	)
+
+	result, err := repo.GetAllProducts()
+	if err != nil {
+		return nil, err
+	}
+	var products []ProductRes
+
+	for _, p := range result {
+		products = append(products, ProductRes{
+			ID:        p.ID,
+			AccountID: p.AccountID,
+			Name:      p.Name,
+			Price:     p.Price,
+			CreatedAt: p.CreatedAt,
+			UpdatedAt: p.UpdatedAt,
+		})
+	}
+
+	product = &ProductResPag{
+		Count:      len(result),
+		ProductRes: products,
+	}
+
+	return
+
 }
