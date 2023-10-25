@@ -35,7 +35,26 @@ func (r *PGRepository) GetAllProducts() (products []products.Product, err error)
 
 // GetProductByID retrieves a product from the PGRepository based on its ID.
 func (r *PGRepository) GetProductByID(id uuid.UUID) (product products.Product, err error) {
-	return product, nil
+	query, count, err := r.DB.From("product").Select("*", "exact", false).Eq("id", id.String()).Execute()
+	if err != nil {
+		return product, err
+	}
+
+	if count == 0 {
+		return product, err
+	}
+
+	var products []products.Product
+
+	if err = json.Unmarshal(query, &products); err != nil {
+		return product, err
+	}
+
+	for _, v := range products {
+		product = v
+	}
+
+	return
 }
 
 // CreateProduct creates a new product in the PGRepository.
