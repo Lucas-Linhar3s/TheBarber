@@ -78,3 +78,33 @@ func GetAllProducts(ctx *gin.Context) (product *ProductResPag, err error) {
 	return
 
 }
+
+func GetProductByID(ctx *gin.Context, id uuid.UUID) (product *ProductRes, err error) {
+	API_URL := os.Getenv("API_URL")
+	API_KEY := os.Getenv("API_KEY")
+
+	client, err := database.NewClient(API_URL, API_KEY, nil, "public")
+	if err != nil {
+		return nil, err
+	}
+
+	var (
+		repo = products.GetService(products.GetRepository(client))
+	)
+
+	result, err := repo.GetProductByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	product = &ProductRes{
+		ID:        result.ID,
+		AccountID: result.AccountID,
+		Name:      result.Name,
+		Price:     result.Price,
+		CreatedAt: result.CreatedAt,
+		UpdatedAt: result.UpdatedAt,
+	}
+
+	return
+}

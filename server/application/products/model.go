@@ -8,9 +8,9 @@ import (
 
 // ProductReq struct
 type ProductReq struct {
-	AccountID uuid.UUID `json:"account_id", binding:"required"`
-	Name      string    `json:"name", binding:"required"`
-	Price     float64   `json:"price", binding:"required"`
+	AccountID uuid.UUID `json:"account_id" binding:"required"`
+	Name      string    `json:"name" binding:"required"`
+	Price     float64   `json:"price" binding:"required"`
 }
 
 type ProductRes struct {

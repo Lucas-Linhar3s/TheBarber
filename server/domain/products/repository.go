@@ -3,17 +3,17 @@ package products
 import (
 	"github.com/Lucas-Linhar3s/TheBarber/database"
 	"github.com/Lucas-Linhar3s/TheBarber/infrastructure/products"
-	repo "github.com/Lucas-Linhar3s/TheBarber/infrastructure/products/supabase"
+	"github.com/Lucas-Linhar3s/TheBarber/infrastructure/products/supabase"
 	"github.com/google/uuid"
 )
 
 type repository struct {
-	repo *repo.PGRepository
+	repo *supabase.PGRepository
 }
 
 func newRepository(client *database.Client) *repository {
 	return &repository{
-		repo: &repo.PGRepository{DB: client},
+		repo: &supabase.PGRepository{DB: client},
 	}
 }
 
