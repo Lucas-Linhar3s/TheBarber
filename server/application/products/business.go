@@ -30,6 +30,7 @@ func CreateProduct(ctx *gin.Context, req ProductReq) (createdID *uuid.UUID, err 
 		Name:      req.Name,
 		Price:     req.Price,
 		CreatedAt: time.Now().Local(),
+		CreatedAt: time.Now().Local(),
 	}
 
 	createdID, err = repo.CreateProduct(data)
