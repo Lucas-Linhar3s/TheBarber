@@ -75,6 +75,15 @@ func (r *PGRepository) CreateProduct(product products.Product) (productID *uuid.
 
 // DeleteProduct deletes a product from the PGRepository.
 func (r *PGRepository) DeleteProduct(id uuid.UUID) error {
+	_, count, err := r.DB.From("product").Delete("id", id.String()).Eq("id", id.String()).Execute()
+	if err != nil {
+		return err
+	}
+
+	if count != 0 {
+		return err
+	}
+
 	return nil
 }
 

@@ -16,6 +16,7 @@ import (
 // @Param product body products.ProductReq true "Create new Products"
 // @Success 201 {object} products.SuccessRes "Created"
 // @Security ApiKeyAuth
+// @Security ApiKeyAuth
 // @Router /product/create [post]
 func CreateProduct(ctx *gin.Context) {
 	var req *products.ProductReq
@@ -42,6 +43,7 @@ func CreateProduct(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} products.ProductResPag "ListAllProducts"
 // @Router /product/list/all [get]
+// @Security ApiKeyAuth
 // @Security ApiKeyAuth
 func GetAllProducts(ctx *gin.Context) {
 	products, err := products.GetAllProducts(ctx)
@@ -81,4 +83,32 @@ func GetProductByID(ctx *gin.Context) {
 
 	config.ResponseWithMessageAndData(ctx, 200, "List one product", product)
 
+}
+
+// DeleteProduct godoc
+// @Summary Delete a product
+// @Description Delete a product
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param id path string true "Product ID"
+// @Success 200 {object} products.SuccessRes "Deleted"
+// @Router /product/delete/{id} [delete]
+// @Security ApiKeyAuth
+func DeleteProduct(ctx *gin.Context) {
+	params := ctx.Param("id")
+
+	idConv, err := uuid.Parse(params)
+	if err != nil {
+		config.ResponseWithError(ctx, 400, err)
+		return
+	}
+
+	err, result := products.DeleteProduct(ctx, idConv)
+	if err != nil {
+		config.ResponseWithError(ctx, 400, err)
+		return
+	}
+
+	config.ResponseWithMessage(ctx, 200, result.String())
 }

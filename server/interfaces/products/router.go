@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,6 +15,7 @@ func Router(r *gin.RouterGroup) {
 	r.POST("/create", Auth(), CreateProduct)
 	r.GET("/list/all", Auth(), GetAllProducts)
 	r.GET("/list/:id", Auth(), GetProductByID)
+	r.DELETE("/delete/:id", Auth(), DeleteProduct)
 }
 
 func Auth() gin.HandlerFunc {
