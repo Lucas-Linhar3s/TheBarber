@@ -16,6 +16,7 @@ import (
 // @Param product body products.ProductReq true "Create new Products"
 // @Success 201 {object} products.SuccessRes "Created"
 // @Security ApiKeyAuth
+// @Security ApiKeyAuth
 // @Router /product/create [post]
 func CreateProduct(ctx *gin.Context) {
 	var req *products.ProductReq
@@ -42,6 +43,7 @@ func CreateProduct(ctx *gin.Context) {
 // @Produce json
 // @Success 200 {object} products.ProductResPag "ListAllProducts"
 // @Router /product/list/all [get]
+// @Security ApiKeyAuth
 // @Security ApiKeyAuth
 func GetAllProducts(ctx *gin.Context) {
 	products, err := products.GetAllProducts(ctx)
