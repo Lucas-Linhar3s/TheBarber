@@ -30,7 +30,6 @@ func CreateProduct(ctx *gin.Context, req ProductReq) (createdID *uuid.UUID, err 
 		Name:      req.Name,
 		Price:     req.Price,
 		CreatedAt: time.Now().Local(),
-		CreatedAt: time.Now().Local(),
 	}
 
 	createdID, err = repo.CreateProduct(data)
@@ -108,4 +107,25 @@ func GetProductByID(ctx *gin.Context, id uuid.UUID) (product *ProductRes, err er
 	}
 
 	return
+}
+
+func DeleteProduct(ctx *gin.Context, params uuid.UUID) (error, *uuid.UUID) {
+	API_URL := os.Getenv("API_URL")
+	API_KEY := os.Getenv("API_KEY")
+
+	db, err := database.NewClient(API_URL, API_KEY, nil, "public")
+	if err != nil {
+		return err, nil
+	}
+
+	var (
+		repo = products.GetService(products.GetRepository(db))
+	)
+
+	if err := repo.DeleteProduct(params); err != nil {
+		return err, nil
+	}
+
+	return nil, &params
+
 }

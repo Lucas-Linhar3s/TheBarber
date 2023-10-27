@@ -82,3 +82,31 @@ func GetProductByID(ctx *gin.Context) {
 	config.ResponseWithMessageAndData(ctx, 200, "List one product", product)
 
 }
+
+// DeleteProduct godoc
+// @Summary Delete a product
+// @Description Delete a product
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param id path string true "Product ID"
+// @Success 200 {object} products.SuccessRes "Deleted"
+// @Router /product/delete/{id} [delete]
+// @Security ApiKeyAuth
+func DeleteProduct(ctx *gin.Context) {
+	params := ctx.Param("id")
+
+	idConv, err := uuid.Parse(params)
+	if err != nil {
+		config.ResponseWithError(ctx, 400, err)
+		return
+	}
+
+	err, result := products.DeleteProduct(ctx, idConv)
+	if err != nil {
+		config.ResponseWithError(ctx, 400, err)
+		return
+	}
+
+	config.ResponseWithMessage(ctx, 200, result.String())
+}
